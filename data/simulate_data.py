@@ -86,6 +86,13 @@ def generate_dataset(days=30, anomaly_days=3):
 
 if __name__ == "__main__":
     df = generate_dataset(days=30, anomaly_days=3)
+
+    today = pd.Timestamp("2026-06-10")
+    today_records = generate_normal_day(today)
+    today_df = pd.DataFrame(today_records)
+    today_df["day_type"] = "normal"
+    df = pd.concat([df, today_df], ignore_index=True)
+    df = df.sort_values("timestamp").reset_index(drop=True)
     os.makedirs("data", exist_ok=True)
     df.to_csv("data/activity_log.csv", index=False)
     print(f"Generated {len(df)} activity records")

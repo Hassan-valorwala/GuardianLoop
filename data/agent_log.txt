@@ -1,0 +1,74 @@
+[2026-06-08 18:04:49] GuardianLoop Agent starting...
+[2026-06-08 18:04:49] Agent cycle started
+[2026-06-08 18:04:49] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-08 18:04:49] Anomaly score: -0.1277
+[2026-06-08 18:04:49] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-08 18:04:52] EMAIL FAILED: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-3713346cd9fsm10448444a91.2 - gsmtp')
+[2026-06-08 18:04:52] Alert email failed — check email config
+[2026-06-08 18:04:52] Agent cycle complete
+[2026-06-08 18:38:23] GuardianLoop Agent starting...
+[2026-06-08 18:38:23] Agent cycle started
+[2026-06-08 18:38:23] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-08 18:38:23] Anomaly score: -0.1277
+[2026-06-08 18:38:23] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-08 18:38:27] EMAIL ALERT SENT to recipient@gmail.com
+[2026-06-08 18:38:27] Agent cycle complete
+[2026-06-08 18:39:21] GuardianLoop Agent starting...
+[2026-06-08 18:39:21] Agent cycle started
+[2026-06-08 18:39:21] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-08 18:39:21] Anomaly score: -0.1277
+[2026-06-08 18:39:21] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-08 18:39:26] EMAIL ALERT SENT to hassanvalorwala3@gmail.com
+[2026-06-08 18:39:26] Agent cycle complete
+[2026-06-08 18:44:27] GuardianLoop Agent starting...
+[2026-06-08 18:44:27] Agent cycle started
+[2026-06-08 18:44:27] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-08 18:44:27] Anomaly score: -0.1277
+[2026-06-08 18:44:27] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-08 18:44:30] EMAIL ALERT SENT to hassanvalorwala3@gmail.com
+[2026-06-08 18:44:30] Agent cycle complete
+[2026-06-08 18:45:29] GuardianLoop Agent starting...
+[2026-06-08 18:45:29] Agent cycle started
+[2026-06-08 18:45:29] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-08 18:45:29] Anomaly score: -0.1277
+[2026-06-08 18:45:29] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-08 18:45:33] EMAIL ALERT SENT to hassanvalorwala3@gmail.com
+[2026-06-08 18:45:33] Agent cycle complete
+[2026-06-08 18:53:53] Agent cycle started
+[2026-06-08 18:53:53] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-08 18:53:53] Anomaly score: -0.1277
+[2026-06-08 18:53:53] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-08 18:53:56] EMAIL ALERT SENT to hassanvalorwala3@gmail.com
+[2026-06-10 10:01:11] Agent cycle started
+[2026-06-10 10:01:11] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-10 10:01:12] Anomaly score: -0.1277
+[2026-06-10 10:01:12] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-10 10:01:16] EMAIL ALERT SENT to hassanvalorwala3@gmail.com
+[2026-06-10 14:35:03] Agent cycle started
+[2026-06-10 14:35:03] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-10 14:35:03] Anomaly score: -0.1277
+[2026-06-10 14:35:03] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-10 14:35:08] EMAIL ALERT SENT to hassanvalorwala3@gmail.com
+[2026-06-10 14:35:20] Agent cycle started
+[2026-06-10 14:35:20] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-10 14:35:20] Anomaly score: -0.1277
+[2026-06-10 14:35:20] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-10 14:35:20] Alert already sent for today — skipping email
+[2026-06-10 14:35:32] Agent cycle started
+[2026-06-10 14:35:32] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-10 14:35:32] Anomaly score: -0.1277
+[2026-06-10 14:35:32] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-10 14:35:32] Alert already sent for today — skipping email
+[2026-06-10 14:35:36] Agent cycle started
+[2026-06-10 14:35:36] Checking activity for 2026-05-30 — 3 events recorded
+[2026-06-10 14:35:36] Anomaly score: -0.1277
+[2026-06-10 14:35:36] ANOMALY DETECTED — score -0.1277 below threshold -0.09
+[2026-06-10 14:35:36] Alert already sent for today — skipping email
+[2026-06-10 15:30:56] Agent cycle started
+[2026-06-10 15:30:56] Checking activity for 2026-06-10 — 8 events recorded
+[2026-06-10 15:30:56] Anomaly score: 0.2305
+[2026-06-10 15:30:56] Status NORMAL — routine appears healthy
+[2026-06-10 15:31:00] Agent cycle started
+[2026-06-10 15:31:00] Checking activity for 2026-06-10 — 8 events recorded
+[2026-06-10 15:31:00] Anomaly score: 0.2305
+[2026-06-10 15:31:00] Status NORMAL — routine appears healthy
