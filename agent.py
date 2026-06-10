@@ -125,6 +125,39 @@ def run_agent():
 
     except Exception as e:
         log_event(f"Agent error: {str(e)}")
+        
+def check_only():
+    """
+    Check activity and return status — no email sending.
+    Used by the dashboard Check Now button.
+    """
+    log_event("Manual check triggered")
+    try:
+        df = pd.read_csv("data/activity_log.csv")
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        latest_date = df["timestamp"].dt.date.max()
+        today_df = df[df["timestamp"].dt.date == latest_date]
+
+        if today_df.empty:
+            log_event("No activity data found for today")
+            return
+
+        log_event(f"Checking activity for {latest_date} — {len(today_df)} events recorded")
+
+        feature_df = extract_features(today_df)
+        model, feature_cols = load_model()
+        X = feature_df[feature_cols].values
+        score = model.decision_function(X)[0]
+
+        log_event(f"Anomaly score: {score:.4f}")
+
+        if score < THRESHOLD:
+            log_event("ANOMALY DETECTED — routine looks unusual")
+        else:
+            log_event("Status NORMAL — routine appears healthy")
+
+    except Exception as e:
+        log_event(f"Agent error: {str(e)}")        
 
 # ── Run once immediately ──────────────────────────────────
 if __name__ == "__main__":

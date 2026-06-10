@@ -5,6 +5,7 @@ import joblib
 import os
 from dotenv import load_dotenv
 from datetime import datetime
+from apscheduler.schedulers.background import BackgroundScheduler
 
 load_dotenv()
 
@@ -84,11 +85,76 @@ def log():
 @app.route("/api/run-agent")
 def run_agent_now():
     try:
-        from agent import run_agent
-        run_agent()
+        from agent import check_only
+        check_only()
         return jsonify({"message": "Agent cycle complete"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route("/api/demo/normal")
+def demo_normal():
+    try:
+        import subprocess
+        # Set today as normal
+        with open("data/demo_mode.txt", "w") as f:
+            f.write("normal")
+        from data.simulate_data import generate_normal_day, generate_anomalous_day
+        import pandas as pd
+        df = pd.read_csv("data/activity_log.csv")
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        # Remove any existing June 10/11 rows
+        df = df[~df["timestamp"].dt.strftime("%Y-%m-%d").isin(["2026-06-10", "2026-06-11"])]
+        today = pd.Timestamp("2026-06-10")
+        records = generate_normal_day(today)
+        today_df = pd.DataFrame(records)
+        today_df["day_type"] = "normal"
+        df = pd.concat([df, today_df], ignore_index=True)
+        df = df.sort_values("timestamp").reset_index(drop=True)
+        df.to_csv("data/activity_log.csv", index=False)
+        # Retrain
+        from model import extract_features, train_model, save_model
+        feature_df = extract_features(df)
+        normal_df = feature_df.head(27)
+        model, feature_cols = train_model(normal_df)
+        save_model(model, feature_cols)
+        return jsonify({"message": "Demo set to NORMAL"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/demo/anomaly")
+def demo_anomaly():
+    try:
+        from data.simulate_data import generate_anomalous_day
+        import pandas as pd
+        df = pd.read_csv("data/activity_log.csv")
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        # Remove any existing June 10/11 rows
+        df = df[~df["timestamp"].dt.strftime("%Y-%m-%d").isin(["2026-06-10", "2026-06-11"])]
+        today = pd.Timestamp("2026-06-11")
+        records = generate_anomalous_day(today)
+        today_df = pd.DataFrame(records)
+        today_df["day_type"] = "anomalous"
+        df = pd.concat([df, today_df], ignore_index=True)
+        df = df.sort_values("timestamp").reset_index(drop=True)
+        df.to_csv("data/activity_log.csv", index=False)
+        # Retrain
+        from model import extract_features, train_model, save_model
+        feature_df = extract_features(df)
+        normal_df = feature_df.head(27)
+        model, feature_cols = train_model(normal_df)
+        save_model(model, feature_cols)
+        return jsonify({"message": "Demo set to ANOMALY"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500    
+    
+# ── Scheduler ─────────────────────────────────────────────
+def scheduled_agent():
+    from agent import run_agent
+    run_agent()
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(scheduled_agent, 'interval', hours=1)
+scheduler.start()    
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -218,11 +218,10 @@ timestamp,activity,day_type
 2026-05-30 06:25:00,kitchen,anomalous
 2026-05-30 15:26:00,kitchen,anomalous
 2026-05-30 19:33:00,kitchen,anomalous
-2026-06-10 06:42:00,wake_up,normal
-2026-06-10 07:52:00,kitchen,normal
-2026-06-10 09:44:00,living_room,normal
-2026-06-10 12:56:00,kitchen,normal
-2026-06-10 14:54:00,bedroom,normal
-2026-06-10 17:14:00,living_room,normal
+2026-06-10 06:57:00,wake_up,normal
+2026-06-10 08:05:00,kitchen,normal
+2026-06-10 09:39:00,living_room,normal
+2026-06-10 13:21:00,kitchen,normal
+2026-06-10 15:12:00,bedroom,normal
 2026-06-10 19:19:00,kitchen,normal
-2026-06-10 21:40:00,bedroom,normal
+2026-06-10 21:10:00,bedroom,normal

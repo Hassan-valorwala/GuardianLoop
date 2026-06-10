@@ -43,6 +43,14 @@
     <!-- Agent feed -->
     <section class="feed-section">
       <div class="feed-header">
+        <!-- Demo controls -->
+      <div class="demo-bar">
+  <span class="demo-label">Demo controls</span>
+            <div class="demo-btns">
+              <button class="demo-btn normal" onclick="setDemo('normal')">● Simulate Normal Day</button>
+              <button class="demo-btn anomaly" onclick="setDemo('anomaly')">● Simulate Anomaly Day</button>
+        </div>
+        </div>
         <p class="section-label">Agent activity</p>
         <button class="check-btn" id="checkBtn" onclick="runAgent()">
           Check now
@@ -212,6 +220,17 @@
     updateClock();
     setInterval(() => { fetchStatus(); fetchFeed(); }, 30000);
     setInterval(updateClock, 1000);
+    
+    async function setDemo(mode) {
+  const btn = document.querySelector(`.demo-btn.${mode}`);
+  btn.textContent = "Setting...";
+  btn.disabled = true;
+  await fetch(`/api/demo/${mode}`);
+  await fetchStatus();
+  await fetchFeed();
+  btn.textContent = mode === "normal" ? "● Simulate Normal Day" : "● Simulate Anomaly Day";
+  btn.disabled = false;
+ }
   </script>
 
 </body>

@@ -72,3 +72,32 @@
 [2026-06-10 15:31:00] Checking activity for 2026-06-10 — 8 events recorded
 [2026-06-10 15:31:00] Anomaly score: 0.2305
 [2026-06-10 15:31:00] Status NORMAL — routine appears healthy
+[2026-06-10 15:41:17] Agent cycle started
+[2026-06-10 15:41:17] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-10 15:41:17] Anomaly score: -0.1387
+[2026-06-10 15:41:17] ANOMALY DETECTED — score -0.1387 below threshold -0.09
+[2026-06-10 15:41:21] EMAIL ALERT SENT to hassanvalorwala3@gmail.com
+[2026-06-10 15:49:55] Manual check triggered
+[2026-06-10 15:49:55] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-10 15:49:55] Anomaly score: -0.1387
+[2026-06-10 15:49:55] ANOMALY DETECTED — routine looks unusual
+[2026-06-10 15:50:07] Manual check triggered
+[2026-06-10 15:50:07] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-10 15:50:07] Anomaly score: -0.1387
+[2026-06-10 15:50:07] ANOMALY DETECTED — routine looks unusual
+[2026-06-10 15:50:16] Manual check triggered
+[2026-06-10 15:50:16] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-10 15:50:16] Anomaly score: -0.1387
+[2026-06-10 15:50:16] ANOMALY DETECTED — routine looks unusual
+[2026-06-10 15:50:17] Manual check triggered
+[2026-06-10 15:50:17] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-10 15:50:18] Anomaly score: -0.1387
+[2026-06-10 15:50:18] ANOMALY DETECTED — routine looks unusual
+[2026-06-10 15:50:30] Manual check triggered
+[2026-06-10 15:50:30] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-10 15:50:30] Anomaly score: -0.1564
+[2026-06-10 15:50:30] ANOMALY DETECTED — routine looks unusual
+[2026-06-10 15:50:36] Manual check triggered
+[2026-06-10 15:50:36] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-10 15:50:36] Anomaly score: -0.1564
+[2026-06-10 15:50:36] ANOMALY DETECTED — routine looks unusual

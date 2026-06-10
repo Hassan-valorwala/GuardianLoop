@@ -257,3 +257,40 @@ body {
   font-size: 0.68rem;
   color: var(--ink-xsoft);
 }
+/* Demo bar */
+.demo-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px dashed var(--ink-xsoft);
+  margin-bottom: 20px;
+}
+
+.demo-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--ink-xsoft);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.demo-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.demo-btn {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 6px 14px;
+  border: 1px solid var(--ink-xsoft);
+  background: transparent;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+
+.demo-btn.normal:hover  { background: var(--safe-bg); border-color: var(--safe); color: var(--safe); }
+.demo-btn.anomaly:hover { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
