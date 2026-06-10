@@ -5,233 +5,192 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GuardianLoop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
 </head>
 <body>
+<div class="page">
 
-  <div class="page">
+  <!-- Topbar -->
+  <nav class="topbar">
+    <span class="brand">GuardianLoop</span>
+    <span class="last-checked" id="lastChecked">Checking...</span>
+  </nav>
 
-    <!-- Top bar -->
-    <nav class="topbar">
-      <span class="brand">GuardianLoop</span>
-      <span class="agent-pulse" id="agentPulse">
-        <span class="pulse-dot"></span> Agent active
-      </span>
-    </nav>
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <p class="eyebrow">Today's status</p>
+    <h1 class="hero-status" id="heroStatus">—</h1>
+    <p class="hero-reason" id="heroReason"></p>
+    <p class="hero-sub" id="heroSub"></p>
+  </section>
 
-    <!-- Hero — the one big answer -->
-    <section class="hero" id="hero">
-      <p class="hero-eyebrow">Current status</p>
-      <h1 class="hero-status" id="heroStatus">—</h1>
-      <p class="hero-sub" id="heroSub">Checking activity data...</p>
-      <p class="hero-meta" id="heroMeta"></p>
-    </section>
+  <!-- Week strip -->
+  <section class="week-section">
+    <p class="section-label">Past 7 days</p>
+    <div class="week-strip" id="weekStrip"></div>
+  </section>
 
-    <div class="divider"></div>
+  <!-- Agent feed -->
+  <section class="feed-section">
+    <div class="feed-top">
+      <p class="section-label">Agent log</p>
+      <button class="check-btn" id="checkBtn" onclick="runAgent()">Check now</button>
+    </div>
+    <div class="feed" id="feed"></div>
+  </section>
 
-    <!-- 7 day strip -->
-    <section class="week-section">
-      <p class="section-label">Past 7 days</p>
-      <div class="week-strip" id="weekStrip">
-        <!-- filled by JS -->
-      </div>
-    </section>
+  <!-- Demo controls — secondary, at bottom -->
+  <section class="demo-section">
+    <p class="section-label">Demo controls</p>
+    <div class="demo-btns">
+      <button class="demo-btn" onclick="setDemo('normal')">Simulate normal day</button>
+      <button class="demo-btn warn" onclick="setDemo('anomaly')">Simulate unusual day</button>
+    </div>
+  </section>
 
-    <div class="divider"></div>
+</div>
 
-    <!-- Agent feed -->
-    <section class="feed-section">
-      <div class="feed-header">
-        <!-- Demo controls -->
-      <div class="demo-bar">
-  <span class="demo-label">Demo controls</span>
-            <div class="demo-btns">
-              <button class="demo-btn normal" onclick="setDemo('normal')">● Simulate Normal Day</button>
-              <button class="demo-btn anomaly" onclick="setDemo('anomaly')">● Simulate Anomaly Day</button>
-        </div>
-        </div>
-        <p class="section-label">Agent activity</p>
-        <button class="check-btn" id="checkBtn" onclick="runAgent()">
-          Check now
-        </button>
-      </div>
-      <div class="feed" id="feed">
-        <!-- filled by JS -->
-      </div>
-    </section>
+<script>
+  function formatDate(str) {
+    const d = new Date(str);
+    return d.toLocaleDateString([], { month: "short", day: "numeric" });
+  }
 
-    <!-- Footer -->
-    <footer class="footer">
-      <span>GuardianLoop · Autonomous Care Agent</span>
-      <span id="footerTime"></span>
-    </footer>
+  function humanScore(score) {
+    if (score >= 0.15)  return "Very routine";
+    if (score >= 0.05)  return "Normal";
+    if (score >= -0.09) return "Slightly unusual";
+    if (score >= -0.13) return "Concerning";
+    return "Very unusual";
+  }
 
-  </div>
+  function buildReason(data) {
+    if (data.current_status === "normal") return "Activity patterns match the learned routine.";
+    // Build reason from today's stats
+    const today = data.days[data.days.length - 1];
+    if (!today) return "Routine looks different from usual.";
+    const events = today.total_activities;
+    const score = today.score;
+    if (events <= 3) return `Only ${events} activity events recorded today — significantly below normal.`;
+    if (score < -0.13) return "Multiple routine patterns are missing today.";
+    return "Today's activity is noticeably different from the usual routine.";
+  }
 
-  <script>
-    function formatTime(iso) {
-      if (!iso) return "—";
-      const d = new Date(iso.replace(" ", "T"));
-      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    }
+  async function fetchStatus() {
+    try {
+      const res = await fetch("/api/status");
+      const data = await res.json();
+      if (data.error) return;
 
-    function formatDate(str) {
-      const d = new Date(str);
-      return d.toLocaleDateString([], { month: "short", day: "numeric" });
-    }
+      const hero = document.getElementById("hero");
+      const heroStatus = document.getElementById("heroStatus");
+      const heroReason = document.getElementById("heroReason");
+      const heroSub = document.getElementById("heroSub");
+      const lastChecked = document.getElementById("lastChecked");
 
-    function humanScore(score) {
-      if (score >= 0.15) return "Very routine";
-      if (score >= 0.05) return "Normal";
-      if (score >= -0.09) return "Slightly unusual";
-      if (score >= -0.13) return "Concerning";
-      return "Very unusual";
-    }
+      const isAnomaly = data.current_status === "anomalous";
+      hero.className = "hero " + (isAnomaly ? "anomalous" : "normal");
+      heroStatus.textContent = isAnomaly ? "Unusual Activity" : "Routine Normal";
+      heroReason.textContent = buildReason(data);
+      heroSub.textContent = isAnomaly
+        ? "Consider reaching out to check on them."
+        : "No action needed.";
 
-    async function fetchStatus() {
-      try {
-        const res = await fetch("/api/status");
-        const data = await res.json();
+      const t = data.last_checked.split(" ")[1].slice(0,5);
+      lastChecked.textContent = "Last checked " + t;
 
-        const hero = document.getElementById("hero");
-        const heroStatus = document.getElementById("heroStatus");
-        const heroSub = document.getElementById("heroSub");
-        const heroMeta = document.getElementById("heroMeta");
+      // Week strip
+      const strip = document.getElementById("weekStrip");
+      strip.innerHTML = "";
+      data.days.forEach(day => {
+        const isAnom = day.status === "anomalous";
+        const barH = Math.max(16, Math.min(72, (day.score + 0.15) * 240));
+        const col = document.createElement("div");
+        col.className = "day-col " + day.status;
+        col.innerHTML = `
+          <span class="day-date">${formatDate(day.date)}</span>
+          <div class="bar-wrap">
+            <div class="bar" style="height:${barH}px" title="Score: ${day.score}"></div>
+          </div>
+          <span class="day-score">${day.score}</span>
+          <span class="day-dot ${day.status}">● ${isAnom ? "Unusual" : "Normal"}</span>
+          <span class="day-events">${day.total_activities} events</span>
+        `;
+        strip.appendChild(col);
+      });
 
-        if (data.current_status === "anomalous") {
-          hero.className = "hero anomalous";
-          heroStatus.textContent = "Check in";
-          heroSub.textContent = "Today's routine looks different from usual. It may be worth reaching out.";
-        } else {
-          hero.className = "hero normal";
-          heroStatus.textContent = "Safe";
-          heroSub.textContent = "Today's activity matches the usual routine. Everything looks normal.";
+    } catch(e) { console.error(e); }
+  }
+
+  async function fetchFeed() {
+    try {
+      const res = await fetch("/api/log");
+      const data = await res.json();
+      const feed = document.getElementById("feed");
+
+      const humanize = (msg) => {
+        if (msg.includes("ANOMALY DETECTED"))       return { text: "Unusual activity pattern detected.", type: "warn" };
+        if (msg.includes("EMAIL ALERT SENT"))        return { text: "Family notified by email.", type: "warn" };
+        if (msg.includes("already sent"))            return { text: "Family already notified today — no duplicate sent.", type: "info" };
+        if (msg.includes("Status NORMAL"))           return { text: "Behavior pattern appears normal.", type: "ok" };
+        if (msg.includes("Agent cycle started"))     return { text: "Agent started a new check.", type: "info" };
+        if (msg.includes("Manual check"))            return { text: "Manual check triggered.", type: "info" };
+        if (msg.includes("Agent cycle complete"))    return { text: "Check complete.", type: "info" };
+        if (msg.includes("starting"))               return { text: "GuardianLoop is running.", type: "info" };
+        if (msg.includes("Checking activity")) {
+          const m = msg.match(/(\d+) events/);
+          return { text: `${m ? m[1] : "?"} activity events recorded today.`, type: "info" };
         }
+        if (msg.includes("Anomaly score")) {
+          const m = msg.match(/-?\d+\.\d+/);
+          const s = m ? parseFloat(m[0]) : 0;
+          return { text: `Behavioral score: ${humanScore(s)}.`, type: "info" };
+        }
+        return { text: msg, type: "info" };
+      };
 
-        heroMeta.textContent = "Last checked at " + data.last_checked.split(" ")[1].slice(0,5);
+      feed.innerHTML = [...data.log].reverse().map(line => {
+        const match = line.match(/\[(.+?)\]\s(.+)/);
+        if (!match) return "";
+        const time = match[1].split(" ")[1];
+        const { text, type } = humanize(match[2]);
+        return `
+          <div class="feed-row ${type}">
+            <span class="feed-time">${time}</span>
+            <span class="feed-msg">${text}</span>
+          </div>`;
+      }).join("");
 
-        // Week strip
-        const strip = document.getElementById("weekStrip");
-        strip.innerHTML = "";
-        data.days.forEach(day => {
-          const col = document.createElement("div");
-          col.className = "day-col " + day.status;
+    } catch(e) { console.error(e); }
+  }
 
-          const isAnomaly = day.status === "anomalous";
-          col.innerHTML = `
-            <span class="day-label">${formatDate(day.date)}</span>
-            <div class="day-bar-wrap">
-              <div class="day-bar" style="height:${Math.max(20, Math.min(80, (day.score + 0.15) * 250))}px"></div>
-            </div>
-            <span class="day-tag">${isAnomaly ? "Unusual" : "Normal"}</span>
-            <span class="day-events">${day.total_activities} events</span>
-          `;
-          strip.appendChild(col);
-        });
-
-      } catch(e) {
-        console.error(e);
-      }
+  async function runAgent() {
+    const btn = document.getElementById("checkBtn");
+    btn.textContent = "Checking...";
+    btn.disabled = true;
+    try {
+      await fetch("/api/run-agent");
+      await fetchStatus();
+      await fetchFeed();
+    } finally {
+      btn.textContent = "Check now";
+      btn.disabled = false;
     }
+  }
 
-    async function fetchFeed() {
-      try {
-        const res = await fetch("/api/log");
-        const data = await res.json();
-        const feed = document.getElementById("feed");
+  async function setDemo(mode) {
+    const btns = document.querySelectorAll(".demo-btn");
+    btns.forEach(b => b.disabled = true);
+    await fetch(`/api/demo/${mode}`);
+    await fetchStatus();
+    await fetchFeed();
+    btns.forEach(b => b.disabled = false);
+  }
 
-        feed.innerHTML = data.log.reverse().map(line => {
-          // Parse timestamp and message
-          const match = line.match(/\[(.+?)\]\s(.+)/);
-          if (!match) return "";
-          const time = match[1].split(" ")[1];
-          const msg = match[2];
-
-          let type = "info";
-          let human = msg;
-
-          if (msg.includes("ANOMALY DETECTED")) {
-            type = "warn";
-            human = "Unusual activity pattern detected — routine looks significantly different.";
-          } else if (msg.includes("EMAIL ALERT SENT")) {
-            type = "warn";
-            human = "Family alert sent by email.";
-          } else if (msg.includes("Status NORMAL")) {
-            type = "ok";
-            human = "Routine looks healthy. No concerns.";
-          } else if (msg.includes("Agent cycle started")) {
-            type = "info";
-            human = "Agent started a new check.";
-          } else if (msg.includes("Agent cycle complete")) {
-            type = "info";
-            human = "Check complete.";
-          } else if (msg.includes("Checking activity")) {
-            const match2 = msg.match(/(\d+) events/);
-            const count = match2 ? match2[1] : "?";
-            type = "info";
-            human = `${count} activity events recorded for today.`;
-          } else if (msg.includes("Anomaly score")) {
-            const scoreMatch = msg.match(/-?\d+\.\d+/);
-            const score = scoreMatch ? parseFloat(scoreMatch[0]) : 0;
-            type = "info";
-            human = `Behavioral score: ${humanScore(score)}`;
-          } else if (msg.includes("starting")) {
-            type = "info";
-            human = "GuardianLoop agent is running.";
-          }
-
-          return `
-            <div class="feed-row ${type}">
-              <span class="feed-time">${time}</span>
-              <span class="feed-msg">${human}</span>
-            </div>
-          `;
-        }).join("");
-
-        feed.scrollTop = 0;
-      } catch(e) {
-        console.error(e);
-      }
-    }
-
-    async function runAgent() {
-      const btn = document.getElementById("checkBtn");
-      btn.textContent = "Checking...";
-      btn.disabled = true;
-      try {
-        await fetch("/api/run-agent");
-        await fetchStatus();
-        await fetchFeed();
-      } finally {
-        btn.textContent = "Check now";
-        btn.disabled = false;
-      }
-    }
-
-    // Footer clock
-    function updateClock() {
-      document.getElementById("footerTime").textContent =
-        new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    }
-
-    fetchStatus();
-    fetchFeed();
-    updateClock();
-    setInterval(() => { fetchStatus(); fetchFeed(); }, 30000);
-    setInterval(updateClock, 1000);
-    
-    async function setDemo(mode) {
-  const btn = document.querySelector(`.demo-btn.${mode}`);
-  btn.textContent = "Setting...";
-  btn.disabled = true;
-  await fetch(`/api/demo/${mode}`);
-  await fetchStatus();
-  await fetchFeed();
-  btn.textContent = mode === "normal" ? "● Simulate Normal Day" : "● Simulate Anomaly Day";
-  btn.disabled = false;
- }
-  </script>
-
+  fetchStatus();
+  fetchFeed();
+  setInterval(() => { fetchStatus(); fetchFeed(); }, 30000);
+</script>
 </body>
 </html>
