@@ -30,11 +30,11 @@ def log_event(message):
     entry = f"[{timestamp}] {message}"
     print(entry)
     os.makedirs("data", exist_ok=True)
-    with open("data/agent_log.txt", "a") as f:
+    with open("/tmp/agent_log.txt", "a") as f:
         f.write(entry + "\n")
         
 def already_alerted(date):
-    alert_log = "data/alert_history.txt"
+    alert_log = "/tmp/alert_history.txt"
     if not os.path.exists(alert_log):
         return False
     with open(alert_log, "r") as f:

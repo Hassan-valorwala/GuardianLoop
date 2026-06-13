@@ -19,7 +19,7 @@ def load_model():
     return model, feature_cols
 
 def get_agent_log():
-    log_path = "data/agent_log.txt"
+    log_path = "/tmp/agent_log.txt"
     if not os.path.exists(log_path):
         return []
     with open(log_path, "r") as f:
