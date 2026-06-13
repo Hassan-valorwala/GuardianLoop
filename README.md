@@ -1,3 +1,11 @@
+---
+title: GuardianLoop
+emoji: 🔒
+colorFrom: green
+colorTo: gray
+sdk: docker
+pinned: false
+---
 # GuardianLoop
 
 Autonomous behavioral anomaly detection for elderly people living alone.
