@@ -157,4 +157,4 @@ scheduler.add_job(scheduled_agent, 'interval', hours=1)
 scheduler.start()    
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=7860, debug=False)

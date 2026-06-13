@@ -105,3 +105,23 @@
 [2026-06-10 23:05:08] Checking activity for 2026-06-10 — 8 events recorded
 [2026-06-10 23:05:08] Anomaly score: 0.1998
 [2026-06-10 23:05:08] Status NORMAL — routine appears healthy
+[2026-06-11 16:08:11] Manual check triggered
+[2026-06-11 16:08:11] Checking activity for 2026-06-10 — 7 events recorded
+[2026-06-11 16:08:11] Anomaly score: 0.0025
+[2026-06-11 16:08:11] Status NORMAL — routine appears healthy
+[2026-06-11 16:08:17] Manual check triggered
+[2026-06-11 16:08:17] Checking activity for 2026-06-10 — 7 events recorded
+[2026-06-11 16:08:17] Anomaly score: 0.0025
+[2026-06-11 16:08:17] Status NORMAL — routine appears healthy
+[2026-06-12 09:33:33] Manual check triggered
+[2026-06-12 09:33:33] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-12 09:33:33] Anomaly score: -0.1387
+[2026-06-12 09:33:33] ANOMALY DETECTED — routine looks unusual
+[2026-06-13 09:27:42] Manual check triggered
+[2026-06-13 09:27:42] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-13 09:27:42] Anomaly score: -0.1000
+[2026-06-13 09:27:42] ANOMALY DETECTED — routine looks unusual
+[2026-06-13 09:27:49] Manual check triggered
+[2026-06-13 09:27:49] Checking activity for 2026-06-11 — 3 events recorded
+[2026-06-13 09:27:49] Anomaly score: -0.1000
+[2026-06-13 09:27:49] ANOMALY DETECTED — routine looks unusual
